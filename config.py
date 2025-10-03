@@ -7,7 +7,11 @@ BELGIAN_CITIES = [
     "Bruges",
     "Brussels",
     "Ghent",
+    "Hasselt",
     "Leuven",
     "Liège",
+    "Luxembourg",
+    "Mons",
     "Namur",
+    "Wavre"
 ]
