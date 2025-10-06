@@ -1,5 +1,6 @@
 """
 weather_collector.py
+--------------------
 
 🌤️ Simple Weather Data Collector ⛈
 
@@ -31,30 +32,33 @@ def get_weather(city):
 
     Returns Dictionary with weather data, None if request fails.
     """
-    url = "http://api.openweathermap.org/data/2.5/weather"
+    url = "http://api.openweathermap.org/data/2.5/weather" # API endpoint
 
-    # API parameters
-    # source: https://openweathermap.org/current
+    # API parameters we'll be sending
+    # docs: https://openweathermap.org/current
     params = {
-        'q': city
-        'appid': API_KEY
+        'q': f'{city},BE',
+        'appid': API_KEY,
         'units': 'metric'
     }
 
     try:
         # docs: https://requests.readthedocs.io/en/latest/user/quickstart/#make-a-request
         response = requests.get(url, params=params, timeout=10)
+        print(f"Status code: {response.status_code}")
+        print(f"URL called: {response.url}")
         data = response.json()
 
         # Extract selected data
+        # docs: https://openweathermap.org/current#fields_json
         weather_data = {
             'city': city,
             'temperature': data['main']['temp'],
             'feels_like': data['main']['feels_like'],
             'humidity': data['main']['humidity'],
-            'description': data['weather'][0]['humidity'],
+            'description': data['weather'][0]['description'],
             'wind_speed': data['wind']['speed'],
-            'collected_at': datetime.now(),strftime('%Y-%m-%d %H:%M:%S')
+            'collected_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         }
 
         return weather_data
@@ -103,7 +107,7 @@ def main():
 
 # This runs when you execute the script
 # Checks for valid API_KEY
-if __name__ == "main":
+if __name__ == "__main__":
     if not API_KEY:
         print("ERROR: No API key found!")
         print("Make sure you have an .env file with OPENWEATHER_API_KEY=<your_key>")
