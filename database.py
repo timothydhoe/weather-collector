@@ -76,6 +76,52 @@ def save_weather(weather_data):
     conn.commit()
     conn.close()
 
+# The following functions are for checking the database:
+# get_recent_data()
+# count_records()
+# They're not used as main functions.
+
+def get_recent_data(limit=10):
+    """
+    Retrieves the most recent weather records from the data base
+    
+    Args:
+        limit: number of records to retrieve (default: 10)
+
+    Returns:
+        List of tuples, each containing one weather record
+    """
+    conn = sqlite3.connect('weather.db')
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        SELECT city, temperature, description, collect_at
+        FROM weather
+        ORDER BY collected_at DESC
+        LIMIT ?
+    ''', (limit,))
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    return rows
+
+def count_records():
+    """
+    Counts total number of weather records in database.
+
+    Returns:
+        Integer: total number of records
+    """
+    conn = sqlite3.connect('weather.db')
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT COUNT(*) FROM weather')
+    count = cursor.fetchone()[0]
+
+    conn.close()
+    return count
+
 # This runs if you execute this file directly (for testing)
 if __name__ == "__main__":
     setup_database()
