@@ -8,6 +8,10 @@ This script fetches current weather data from the OpenWeatherMap API every time 
 
 The goal is to build up a dataset over a few weeks that I can then analyse for patterns, trends, and practice with.
 
+**Extract**: Fetching data from OpenWeatherMap API
+**Transform**: Converting API respondes into structured data
+**Load**: Storing data in SQLite3 database 
+
 ## Why I built this
 
 Hands-on experience with:
@@ -34,7 +38,10 @@ weather-collector/
 
 
 ## Tech stack
-**TODO:** explain technologies used
+**Python**: 3.13.7
+**SQLite3**: 3.42.2
+**OpenWeatherMap API**: Free weather data source
+**Libraries**: `requests`, `python-dotenv`
 
 ## Setup instructions (At this time, it will not work yet!)
 
@@ -66,17 +73,49 @@ pip install -r requirements.txt
 
 
 ## How to use it
-**TODO:** Explain how I use it.
+```bash
+# First time : creates database and collects initial data
+python collect_weather.py
+```
+
+You should see output like this:
+```
+Fetching data for Brussels... ✓ 12.5°C, light rain
+Fetching data for Antwerp... ✓ 11.8°C, cloudy
+...
+✓ Successfully stored 8 weather records in database
+```
+
+### Database Schema
+
+```sql
+weather_data (
+    id INTEGER PRIMARY KEY,
+    city TEXT,
+    country TEXT,
+    temperature REAL,
+    feels_like REAL,
+    humidity INTEGER,
+    pressure INTEGER,
+    wind_speed REAL,
+    weather_description TEXT,
+    collected_at DATETIME
+)
 
 ## Querying
 **TODO:** explain some basic queries.
 
-## Database functions
-**TODO:** explain database and learnings.
-**TODO:** Expalin database schema
-
 ## Next Steps
-**TODO:** next steps
+
+- [ ] Automate the process (eg, every 6 hours)
+- [ ] Add more weather metrics (UV index, visibility, precipitation)
+- [ ] Implement data quality checks
+- [ ] Add unit tests
+- [ ] Create data validation layer
+- [ ] Log to file instead of console
+- [ ] Add alerting for failed collections
+
+*This dataset will be used in my companion project: **Belgium Weather Analysis** - a data science project using Pandas, visualization libraries, and statistical analysis to find patterns in the collected data.*
 
 ## API information
 This project uses the [OpenWeatherMap Current Weather Data API](https://openweathermap.org/current)
